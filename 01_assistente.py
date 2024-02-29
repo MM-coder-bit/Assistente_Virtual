@@ -10,10 +10,21 @@ import random
 import datetime
 
 hour = datetime.datetime.now().strftime('%H:%M')
-#print(hour)
+print(hour)
 
 date = datetime.date.today().strftime('%d/%B/%Y')
 date = date.split('/')
-#print(date)
 
 sns.set()
+
+from modules import carrega_agenda, comandos_respostas
+comandos = comandos_respostas.comandos
+respostas = comandos_respostas.respostas
+
+meu_nome = 'Agatha'
+chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Caminho do Google Chrome no seu PC
+
+def search(frase):
+    wb.get(chrome_path).open('https://www.google.com/search?q=' + frase)
+
+search('Linguagem Python')

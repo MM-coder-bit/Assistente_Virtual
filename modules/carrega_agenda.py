@@ -1,42 +1,45 @@
+# Importa as bibliotecas necessárias.
 import datetime
 import pandas as pd
 
+# Obtém a hora atual.
 hora_atual = datetime.datetime.now()
-#print(hora_atual)
+
+# Obtém a hora e o minuto da hora atual.
 hora_atual, minuto_atual = datetime.datetime.time(hora_atual).hour, datetime.datetime.time(hora_atual).minute
-#print('Hora atual:', hora_atual)
-#print('Minuto atual: ', minuto_atual)
+
+# Obtém a data atual.
 data_atual = datetime.datetime.date(datetime.datetime.today())
-#print('Data atual:', data_atual)
 
+# Define o caminho para a planilha de agenda.
 planilha_agenda = 'Agenda\\agenda.xlsx'
-agenda = pd.read_excel(planilha_agenda)
-#print(agenda)
 
+# Lê a planilha de agenda utilizando a biblioteca pandas.
+agenda = pd.read_excel(planilha_agenda)
+
+# Inicializa listas vazias para armazenar dados da agenda.
 descricao, responsavel, hora_agenda = [], [], []
 
+# Itera sobre as linhas da agenda.
 for index, row in agenda.iterrows():
-    #print(index)
-    #print(row)
     data = datetime.datetime.date(row['data'])
-    #print(data)
     hora_completa = datetime.datetime.strptime(str(row['hora']), '%H:%M:%S')
-    #print(hora_completa)
     hora = datetime.datetime.time(hora_completa).hour
-    #print(hora)
 
+    # Verifica se a data na agenda é igual à data atual e se a hora é maior ou igual à hora atual.
     if data_atual == data:
         if hora >= hora_atual:
             descricao.append(row['descricao'])
             responsavel.append(row['responsavel'])
             hora_agenda.append(row['hora'])
 
-#print(descricao)
-#print(responsavel)
-#print(hora_agenda)
-
+# Função que carrega os dados da agenda.
 def carrega_agenda():
     if descricao:
         return descricao, responsavel, hora_agenda
     else:
         return False
+    
+#print(descricao)
+#print(responsavel)
+#print(hora_agenda)
