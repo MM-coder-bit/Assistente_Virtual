@@ -148,4 +148,32 @@ def predict_sound(AUDIO, SAMPLE_RATE, plot=True):
     return max(count_results)
 
 # Exemplo de uso da função
-predict_sound('Audio/triste.wav', loaded_model[2], plot=False)
+#predict_sound('Audio/triste.wav', loaded_model[2], plot=False)
+
+# Função para reproduzir música no YouTube com base na emoção fornecida como argumento.
+def play_music_youtube(emocao):
+    # Inicializa a variável de controle para reprodução como Falsa
+    play = False
+    
+    # Verifica se a emoção é 'triste' ou 'medo'
+    if emocao == 'triste' or emocao == 'medo':
+        # Abre a URL do YouTube para uma música relacionada à tristeza ou medo
+        wb.get(chrome_path).open('https://www.youtube.com/watch?v=k32IPg4dbz0&ab_channel=Amelhorm%C3%BAsicainstrumental')
+        # Define a variável de controle para reprodução como Verdadeira
+        play = True
+    
+    # Verifica se a emoção é 'nervosa' ou 'surpreso'
+    if emocao == 'nervosa' or emocao == 'surpreso':
+        # Abre a URL do YouTube para uma música relacionada à nervosismo ou surpresa
+        wb.get(chrome_path).open('https://www.youtube.com/watch?v=pWjmpSD-ph0&ab_channel=CassioToledo')
+        # Define a variável de controle para reprodução como Verdadeira
+        play = True
+    
+    # Retorna o status de reprodução (True se uma música foi aberta, False caso contrário)
+    return play
+
+#play_music_youtube('triste')
+#emocao = predict_sound('Audio/triste.wav', loaded_model[2], plot=False)
+#print(emocao)
+#play_music_youtube(emocao[1])
+
