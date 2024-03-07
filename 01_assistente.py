@@ -247,3 +247,11 @@ def listen_microphone():
 # Chamando a função para testar a captura de áudio e reconhecimento de fala.
 listen_microphone()
 
+def test_models():
+    audio_source = 'recordings\speech.wav'
+    prediction = predict_sound(audio_source, loaded_model[2], plot = False)
+    return prediction
+
+print(test_models())
+
+
