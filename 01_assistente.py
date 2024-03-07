@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt  # Biblioteca para criação de gráficos
 import seaborn as sns  # Biblioteca para visualização de dados
 import random  # Biblioteca para geração de números aleatórios
 import datetime  # Biblioteca para manipulação de data e hora
+import pyaudio
 
 # Obtém a hora atual e a imprime.
 hour = datetime.datetime.now().strftime('%H:%M')
@@ -77,8 +78,6 @@ def predict_sound(AUDIO, SAMPLE_RATE, plot=True):
     # pad_end=True garante que os frames alcancem o final do sinal, e pad_value=0 preenche os valores além do sinal com zeros.
 
     splitted_audio_data = tf.signal.frame(clip, sample_rate, sample_rate, pad_end=True, pad_value=0)
-
-
 
     # Iterar sobre as partes do áudio
     for i, data in enumerate(splitted_audio_data.numpy()):
@@ -172,8 +171,79 @@ def play_music_youtube(emocao):
     # Retorna o status de reprodução (True se uma música foi aberta, False caso contrário)
     return play
 
-#play_music_youtube('triste')
-#emocao = predict_sound('Audio/triste.wav', loaded_model[2], plot=False)
-#print(emocao)
-#play_music_youtube(emocao[1])
+# Exemplo de uso:
+# 1. Chama a função play_music_youtube para a emoção 'triste'.
+# 2. Realiza a previsão da emoção para o áudio 'triste.wav' usando o modelo carregado.
+# 3. Imprime a emoção prevista.
+# 4. Chama novamente a função play_music_youtube usando a emoção prevista.
+
+# 1. Chama a função play_music_youtube para a emoção 'triste'.
+# play_music_youtube('triste')
+
+# 2. Realiza a previsão da emoção para o áudio 'triste.wav' usando o modelo carregado.
+# emocao = predict_sound('Audio/triste.wav', loaded_model[2], plot=False)
+
+# 3. Imprime a emoção prevista.
+# print(emocao)
+
+# 4. Chama novamente a função play_music_youtube usando a emoção prevista.
+# play_music_youtube(emocao[1])
+
+
+# Definindo uma função chamada 'speak' que recebe 'audio' como parâmetro.
+def speak(audio):
+    # Inicializando o motor de síntese de fala.
+    engine = pyttsx3.init()
+
+    # Configurando a taxa de fala (palavras por minuto).
+    engine.setProperty('rate', 250)
+
+    # Configurando o volume da fala para o máximo (1).
+    engine.setProperty('volume', 1)
+
+    # Utilizando o método 'say' do motor para converter o texto fornecido em fala.
+    engine.say(audio)
+
+    # Executando o motor de síntese de fala e aguardando a conclusão.
+    engine.runAndWait()
+
+# Chamando a função 'speak' com uma string de teste como argumento.
+#speak('Testando o sintetizador de voz da assistente, Mateus Marques')
+
+# Definindo uma função chamada 'listen_microphone'.
+def listen_microphone():
+    # Inicializando um objeto Recognizer para lidar com o microfone.
+    microfone = sr.Recognizer()
+
+    # Usando o microfone como fonte de entrada de áudio.
+    with sr.Microphone() as source:
+        # Ajustando para o ruído ambiente durante 0.8 segundos.
+        microfone.adjust_for_ambient_noise(source, duration=0.8)
+
+        # Imprimindo uma mensagem indicando que o programa está ouvindo.
+        print('Ouvindo:')
+
+        # Capturando o áudio do microfone.
+        audio = microfone.listen(source)
+
+        # Escrevendo os dados do áudio em um arquivo WAV.
+        with open('recordings/speech.wav', 'wb') as f:
+            f.write(audio.get_wav_data())
+
+    try:
+        # Tentando reconhecer a fala usando o serviço Google Speech Recognition, com suporte ao idioma português do Brasil.
+        frase = microfone.recognize_google(audio, language='pt-BR')
+
+        # Imprimindo a frase reconhecida.
+        print('Você disse: ' + frase)
+    except sr.UnknownValueError:
+        # Tratando o caso em que a fala não pôde ser compreendida.
+        frase = ''
+        print('Não entendi')
+
+    # Retornando a frase reconhecida.
+    return frase
+
+# Chamando a função para testar a captura de áudio e reconhecimento de fala.
+listen_microphone()
 
