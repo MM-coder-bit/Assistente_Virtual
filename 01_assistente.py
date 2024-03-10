@@ -28,7 +28,7 @@ comandos = comandos_respostas.comandos
 respostas = comandos_respostas.respostas
 
 # Nome para ser utilizado pela assistente virtual.
-meu_nome = 'Agatha'
+meu_nome = 'Ana'
 
 # Caminho do Google Chrome no seu PC.
 chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
@@ -136,14 +136,14 @@ def predict_sound(AUDIO, SAMPLE_RATE, plot=True):
 
         # Exibir o resultado para cada parte do áudio
         result_str = 'PARTE ' + str(i) + ': ' + str(predictions).upper()
-        print(result_str)
+        #print(result_str)
 
     # Contar ocorrências de cada rótulo emocional e imprimir
     count_results = [[results.count(x), x] for x in set(results)]
-    print(count_results)
+    #print(count_results)
 
     # Imprimir o rótulo emocional mais frequente
-    print(max(count_results))
+    #print(max(count_results))
     return max(count_results)
 
 # Exemplo de uso da função
@@ -245,13 +245,42 @@ def listen_microphone():
     return frase
 
 # Chamando a função para testar a captura de áudio e reconhecimento de fala.
-listen_microphone()
+#listen_microphone()
 
+# Função que realiza testes em modelos de processamento de áudio
 def test_models():
-    audio_source = 'recordings\speech.wav'
-    prediction = predict_sound(audio_source, loaded_model[2], plot = False)
+    # Caminho do arquivo de áudio a ser testado
+    audio_source = 'recordings\\speech.wav'  # Use \\ ou r' ' para evitar problemas com barras invertidas
+    
+    # Chama a função predict_sound para obter a previsão do som
+    # Argumentos: caminho do arquivo de áudio, terceiro modelo carregado e plot definido como False
+    prediction = predict_sound(audio_source, loaded_model[2], plot=False)
+    
+    # Retorna a previsão obtida
     return prediction
 
-print(test_models())
+# Chamada da função test_models e impressão do resultado
+#print(test_models())
 
+# ---------------------------------------------------- #
+playing = False
+mode_control = False
+print('[INFO] Pronto para começar!')
 
+playsound('C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n1.mp3')
+
+while (1):
+    result = listen_microphone()
+
+    if meu_nome in result:
+        result = str(result.split(meu_nome + ' ')[1])
+        result = result.lower()
+        print('Acionou a assistente!')
+        print('Após o processamento: ', result)
+
+        if result == 'C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n2.mp3':
+            playsound('n2.mp3')
+            speak(''.join(random.sample(respostas[4], k = 1)))
+            break       
+    else:
+        playsound('C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n3.mp3')
