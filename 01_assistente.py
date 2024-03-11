@@ -28,7 +28,7 @@ comandos = comandos_respostas.comandos
 respostas = comandos_respostas.respostas
 
 # Nome para ser utilizado pela assistente virtual.
-meu_nome = 'Ana'
+meu_nome = 'Maria'
 
 # Caminho do Google Chrome no seu PC.
 chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
@@ -250,8 +250,8 @@ def listen_microphone():
 # Função que realiza testes em modelos de processamento de áudio
 def test_models():
     # Caminho do arquivo de áudio a ser testado
-    audio_source = 'recordings\\speech.wav'  # Use \\ ou r' ' para evitar problemas com barras invertidas
-    
+    #audio_source = 'recordings\\speech.wav'  # Use \\ ou r' ' para evitar problemas com barras invertidas
+    audio_source = 'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\recordings\\speech.wav'
     # Chama a função predict_sound para obter a previsão do som
     # Argumentos: caminho do arquivo de áudio, terceiro modelo carregado e plot definido como False
     prediction = predict_sound(audio_source, loaded_model[2], plot=False)
@@ -267,20 +267,20 @@ playing = False
 mode_control = False
 print('[INFO] Pronto para começar!')
 
-playsound('C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n1.mp3')
+playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n1.mp3')
 
 while (1):
     result = listen_microphone()
-
+    
     if meu_nome in result:
         result = str(result.split(meu_nome + ' ')[1])
         result = result.lower()
-        print('Acionou a assistente!')
+        #print('Acionou a assistente!')
         print('Após o processamento: ', result)
 
-        if result == 'C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n2.mp3':
-            playsound('n2.mp3')
+        if result == 'encerrar':
+            playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n2.mp3')
             speak(''.join(random.sample(respostas[4], k = 1)))
             break       
     else:
-        playsound('C:\\Repositorios\\Pessoal\\IA Expert\\Assistente_Virtual\\Audio\\n3.mp3')
+        playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n3.mp3')
