@@ -221,7 +221,7 @@ def listen_microphone():
         microfone.adjust_for_ambient_noise(source, duration=0.8)
 
         # Imprimindo uma mensagem indicando que o programa está ouvindo.
-        print('Ouvindo:')
+        print('Ouvindo ...')
 
         # Capturando o áudio do microfone.
         audio = microfone.listen(source)
@@ -263,24 +263,53 @@ def test_models():
 #print(test_models())
 
 # ---------------------------------------------------- #
-playing = False
-mode_control = False
+# Variaveis de controle
+playing = False  # Indica se um áudio está sendo reproduzido
+mode_control = False  # Indica o modo de controle, por exemplo, se o assistente está ouvindo
 print('[INFO] Pronto para começar!')
 
-playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n1.mp3')
+# Caminhos dos arquivos de áudio
+n1 = r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n1.mp3'
+n2 = r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n2.mp3'
+n3 = r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n3.mp3'
 
+# Reproduz um áudio ao iniciar
+playsound(n1)
+
+# loop principal
 while (1):
+    # Obtém entrada do microfone
     result = listen_microphone()
     
+    # Verifica se o nome do assistente foi mencionado na entrada
     if meu_nome in result:
+        # Extrai o comando após o nome do assistente e converte para minúsculas
         result = str(result.split(meu_nome + ' ')[1])
         result = result.lower()
         #print('Acionou a assistente!')
+        # Imprime o resultado após o processamento
         print('Após o processamento: ', result)
 
+        # Comandos para as listar as funcionalidades
+        if result in comandos[0]:
+            #playsound(n2)
+            speak('Até agora minhas funções são: ' + respostas[0])
+
+        # Comandos para exibir a hora
+        if result in comandos[3]:
+            #playsound(n2)
+            speak('Agora são ' + datetime.datetime.now().strftime('%H:%M'))
+
+        # Comando para exibir a data
+        if result in comandos[4]:
+            #playsound(n2)
+            speak('Hoje é dia ' + date[0] + ' de ' + date[1])
+
+        # Comando para encerrar o programa
         if result == 'encerrar':
             playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n2.mp3')
             speak(''.join(random.sample(respostas[4], k = 1)))
             break       
     else:
-        playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n3.mp3')
+        # Reproduz um áudio quando o nome do assistente não é detectado
+        playsound(n3)
