@@ -308,7 +308,7 @@ while (1):
         # Comando para criação e leitura de lembretes
         if result in comandos[1]:
             # Reproduz um som indicando que o assistente está pronto para receber a anotação
-            playsound(n2)
+            #playsound(n2)
 
             # Solicita ao usuário para falar o lembrete
             speak('Pode falar!')
@@ -370,7 +370,30 @@ while (1):
                 # Se não há eventos agendados, informa ao usuário
                 speak('Não há eventos agendados para hoje a partir do horário atual!')
         
-        
+        # Verifica se o comando corresponde à ativação do modo de análise de emoção
+        if result in comandos[5]:
+            # Ativa o modo de controle
+            mode_control = True
+
+            # Reproduz um som indicando que o modo foi ativado
+            #playsound(n1)
+
+            # Informa ao usuário que o modo de análise de emoção foi ativado
+            speak('Modo de análise de emoção foi ativado!')
+
+        # Verifica se o modo de controle está ativado
+        if mode_control:
+            # Realiza a análise de emoção utilizando a função test_models()
+            analyze = test_models()
+
+            # Imprime a análise de emoção na voz do usuário
+            print(f'Notei {analyze} na sua voz')
+
+            # Verifica se não está reproduzindo nenhum áudio
+            if not playing:
+                # Ativa a reprodução de música no YouTube com base na análise de emoção
+                playing = play_music_youtube(analyze[1])
+
         # Comando para encerrar o programa
         if result == 'encerrar':
             #playsound(n2)
