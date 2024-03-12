@@ -305,11 +305,47 @@ while (1):
             #playsound(n2)
             speak('Hoje é dia ' + date[0] + ' de ' + date[1])
 
+        # Comando para criação e leitura de lembretes
+        if result in comandos[1]:
+            # Reproduz um som indicando que o assistente está pronto para receber a anotação
+            playsound(n2)
+
+            # Solicita ao usuário para falar o lembrete
+            speak('Pode falar!')
+
+            # Escuta a entrada do microfone e salva no arquivo de anotação
+            result = listen_microphone()
+
+            # Abre o arquivo de anotação em modo de apêndice e escreve a anotação
+            anotacao = open('anotacao.txt', mode='a+', encoding='utf-8')
+            anotacao.write(result + '\n')
+            anotacao.close()
+
+            # Confirma que a anotação foi feita com uma resposta aleatória
+            speak(''.join(random.sample(respostas[1], k=1)))
+
+            # Pergunta se deseja ler os lembretes
+            speak('Deseja que eu leia os lembretes?')
+
+            # Escuta a resposta do usuário
+            result = listen_microphone()
+
+            # Se a resposta for afirmativa, lê os lembretes do arquivo
+            if result == 'sim' or result == 'pode ler':
+                with open('anotacao.txt') as file_source:
+                    lines = file_source.readlines()
+                    for line in lines:
+                        # Lê cada linha do arquivo como um lembrete
+                        speak(line)
+            else:
+                # Se a resposta for negativa, confirma a decisão
+                speak('Ok!')
+     
         # Comando para encerrar o programa
         if result == 'encerrar':
             playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n2.mp3')
             speak(''.join(random.sample(respostas[4], k = 1)))
-            break       
+            break
     else:
         # Reproduz um áudio quando o nome do assistente não é detectado
         playsound(n3)
