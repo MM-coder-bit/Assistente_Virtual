@@ -340,10 +340,40 @@ while (1):
             else:
                 # Se a resposta for negativa, confirma a decisão
                 speak('Ok!')
-     
+
+        # Comandos para solicitar ajuda (abrir páginas no Google)
+        if result in comandos[2]:
+            # Reproduz um som indicando que a assistente está pronta para ajudar
+            #playsound(n2)
+        
+            # Seleciona uma resposta aleatória da lista de respostas para ajudar
+            speak(''.join(random.sample(respostas[2], k=1)))
+        
+            # Escuta a entrada do microfone para determinar a consulta de pesquisa
+            result = listen_microphone()
+        
+            # Chama a função de pesquisa para abrir páginas no Google
+            search(result)
+        
+        # Comandos para agenda
+        if result in comandos[6]:
+            # Reproduz um som indicando que a assistente está lidando com a agenda
+            #playsound(n2)
+        
+            # Verifica se a agenda foi carregada com sucesso
+            if carrega_agenda.carrega_agenda():
+                # Se há eventos agendados, lê e exibe as informações
+                speak('Estes são os eventos agendados para hoje:')
+                for i in range(len(carrega_agenda.carrega_agenda()[1])):
+                    speak(carrega_agenda.carrega_agenda()[1][i] + ' ' + carrega_agenda.carrega_agenda()[0][i] + ' agendada para as ' + str(carrega_agenda.carrega_agenda()[2][i]))
+            else:
+                # Se não há eventos agendados, informa ao usuário
+                speak('Não há eventos agendados para hoje a partir do horário atual!')
+        
+        
         # Comando para encerrar o programa
         if result == 'encerrar':
-            playsound(r'C:\\Repositorios\\Pessoal\\IA_Expert\\Assistente_Virtual\\Audio\\n2.mp3')
+            #playsound(n2)
             speak(''.join(random.sample(respostas[4], k = 1)))
             break
     else:
